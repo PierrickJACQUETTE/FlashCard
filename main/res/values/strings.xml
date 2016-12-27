@@ -1,6 +1,24 @@
 <resources>
     <string name="app_name">FashCard</string>
+    <string name="title_activity_ajouter_jeu">AjouterJeu</string>
+    <string name="title_activity_ajouter_carte">AjouterCarte</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="outilCreateSupp_dialog_title">Que voulez-vous faire ?</string>
+    <string name="outilCreateSupp_dialog_supp">Supprimer le jeu</string>
+    <string name="outilCreateSupp_dialog_add">Ajouter une carte</string>
+
+    <string name="accueil_title">Testez vos connaissances</string>
+    <string name="accueil_button_apprendre">Apprendre</string>
+    <string name="accueil_button_ajouter">Ajouter un Jeu</string>
+    <string name="accueil_button_parametres">Parametres</string>
+
+    <string name="ajouter_carte_tv_rep">Reponse : </string>
+    <string name="ajouter_carte_tv_que">Question : </string>
+    <string name="ajouter_add">Ajouter</string>
+
+    <string name="ajouter_jeu_tv_nom">Nom</string>
+
+    <string name="outil_create_supp_button_plus">+</string>
+    <string name="outil_create_supp_button_dowload">Import</string>
+
 </resources>

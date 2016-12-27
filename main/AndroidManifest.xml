@@ -15,7 +15,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ListeActivity"></activity>
+
+        <provider
+            android:name=".FCContentProvider"
+            android:authorities="com.project.fcContentProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".ListeActivity" />
+        <activity android:name=".OutilCreateSupp" />
+        <activity android:name=".AjouterJeu" />
+        <activity android:name=".AjouterCarte" />
+        <activity android:name=".QuizCarte"></activity>
     </application>
 
 </manifest>

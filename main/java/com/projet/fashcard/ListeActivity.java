@@ -18,23 +18,24 @@ public class ListeActivity extends AppCompatActivity implements ListeJeuxFragmen
         setContentView(R.layout.activity_liste);
         manager = getSupportFragmentManager();
         Fragment fragment = manager.findFragmentById(R.id.liste_fragment);
-        if(fragment == null){
+        if (fragment == null) {
             fragment = ListeJeuxFragment.newInstance();
             manager.beginTransaction().add(R.id.liste_fragment, fragment).commit();
         }
     }
 
-    protected void goToJeux(int index){
-        //en attente de chercher dans la database
-        Intent intent = new Intent(this, AccueilActivity.class);
+    protected void goToJeux(long index) {
+        Intent intent = new Intent(this, QuizCarte.class);
+        intent.putExtra("index", index);
         startActivity(intent);
     }
 
     @Override
-    public void onJeuxSelection(int index) {
+    public void onJeuxSelection(long index) {
         goToJeux(index);
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {}
+    public void onFragmentInteraction(Uri uri) {
+    }
 }

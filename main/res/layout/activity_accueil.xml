@@ -23,7 +23,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Testez vos connaissances"
+            android:text="@string/accueil_title"
             android:textSize="25dp"
             android:id="@+id/textView"
             android:layout_gravity="center_horizontal"
@@ -33,27 +33,27 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Apprendre"
+            android:text="@string/accueil_button_apprendre"
             android:textSize="20dp"
-            android:id="@+id/button_Learn"
+            android:id="@+id/button_apprendre"
             android:onClick="toJeu"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ajouter un Jeu"
+            android:text="@string/accueil_button_ajouter"
             android:textSize="20dp"
-            android:id="@+id/button_Create"
+            android:id="@+id/button_create"
             android:onClick="toCreate"
             android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Parametres"
+            android:text="@string/accueil_button_parametres"
             android:textSize="20dp"
-            android:id="@+id/button_Opt"
+            android:id="@+id/button_opt"
             android:onClick="toOption"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>

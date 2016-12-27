@@ -1,29 +1,25 @@
 package com.projet.fashcard;
 
-
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.view.LayoutInflater;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.SimpleCursorAdapter;
 
-import java.util.ArrayList;
+public class ListeJeuxFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-public class ListeJeuxFragment extends ListFragment {
-    
-    private static final String ARG_JEUX = "jeux";
-
-    private ArrayList<String> mJeux;
-
+    private static String authority = "com.project.fcContentProvider";
     private OnFragmentInteractionListener mListener;
+    private SimpleCursorAdapter adapter;
+    private LoaderManager manager;
 
-    public ListeJeuxFragment() {}
+    public ListeJeuxFragment() {
+    }
 
     public static ListeJeuxFragment newInstance() {
         ListeJeuxFragment fragment = new ListeJeuxFragment();
@@ -35,11 +31,10 @@ public class ListeJeuxFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mJeux = ListeJeux.getInstance().recup();
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, mJeux);
+        adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_1, null, new String[]{"nom"}, new int[]{android.R.id.text1}, 0);
         setListAdapter(adapter);
+        manager = getLoaderManager();
+        manager.initLoader(0, null, this);
     }
 
     @Override
@@ -59,15 +54,33 @@ public class ListeJeuxFragment extends ListFragment {
         mListener = null;
     }
 
+    @Override
+    public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        Uri uri;
+        Uri.Builder builder = new Uri.Builder();
+        uri = builder.scheme("content").authority(authority).appendPath("jeu_table").build();
+        return new CursorLoader(getActivity(), uri, new String[]{"_id", "nom"}, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
+    }
+
     public interface OnFragmentInteractionListener {
-        void onJeuxSelection(int index);
+        void onJeuxSelection(long index);
+
         void onFragmentInteraction(Uri uri);
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        if(mListener != null) {
-            mListener.onJeuxSelection(position);
+        if (mListener != null) {
+            mListener.onJeuxSelection(id);
         }
     }
 }
