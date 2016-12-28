@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -57,6 +57,4 @@ public class AjouterJeu extends AppCompatActivity {
         setResult(Activity.RESULT_OK);
         finish();
     }
-
-
 }

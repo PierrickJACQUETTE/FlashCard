@@ -5,15 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragment.OnFragmentInteractionListener {
 
@@ -39,6 +37,12 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
+
     public void ajouterJeu(View view) {
         Intent intent = new Intent(this, AjouterJeu.class);
         startActivityForResult(intent, 1);
@@ -53,11 +57,11 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
         }
     }
 
-
     public void download(View view) {
-        Log.d("In_OutilCreateSupp", "download: ");
-        Toast toast = Toast.makeText(this, "En cours de développement", Toast.LENGTH_SHORT);
-        toast.show();
+        Intent intent = new Intent(this, DownloadManagerActivity.class);
+        startService(intent);
+        fragment = ListeJeuxFragment.newInstance();
+        manager.beginTransaction().replace(R.id.liste_fragment, fragment).addToBackStack("debut").commit();
     }
 
     public void supp(long position) {
@@ -66,7 +70,8 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
         ContentUris.appendId(builder, position);
         Uri uri = builder.build();
         int res = getContentResolver().delete(uri, null, null);
-        finish();
+        fragment = ListeJeuxFragment.newInstance();
+        manager.beginTransaction().replace(R.id.liste_fragment, fragment).addToBackStack("debut").commit();
     }
 
     @Override
@@ -86,7 +91,6 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
                 intent.putExtra("id", position);
                 startActivity(intent);
                 finish();
-
             }
         });
         AlertDialog dialog = builder.create();

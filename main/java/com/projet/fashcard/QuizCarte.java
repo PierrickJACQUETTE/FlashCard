@@ -8,8 +8,8 @@ import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +26,7 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     private TextView question;
     private TextView reponse;
     private Button verifier;
-    private Button facile;
+    private Button difficile;
 
 
     @Override
@@ -43,20 +43,20 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         reponse = (TextView) findViewById(R.id.quiz_reponse);
         question = (TextView) findViewById(R.id.quiz_question);
         verifier = (Button) findViewById(R.id.verifier);
-        facile = (Button) findViewById(R.id.facile);
-        facile.setEnabled(false);
+        difficile = (Button) findViewById(R.id.difficile);
+        difficile.setEnabled(false);
         manager = getLoaderManager();
         manager.initLoader(0, null, this);
     }
 
     public void verifier(View view) {
         reponse.setText(adapter.getCursor().getString(2));
-        facile.setEnabled(true);
+        difficile.setEnabled(true);
         verifier.setEnabled(false);
     }
 
-    public void facile(View view) {
-        facile.setEnabled(false);
+    public void difficile(View view) {
+        difficile.setEnabled(false);
         verifier.setEnabled(true);
         reponse.setText("");
         question.setText("");

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FashCardSQLite extends SQLiteOpenHelper {
 
-    private static int VERSION = 2;
+    private static int VERSION = 3;
     private static FashCardSQLite instance;
     private static String bd = "FCBD";
     private String carte_table = "create table carte_table( " +
@@ -36,7 +36,6 @@ public class FashCardSQLite extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(jeu_table);
         db.execSQL(carte_table);
-
     }
 
     @Override

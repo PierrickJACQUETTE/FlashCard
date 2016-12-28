@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.projet.fashcard">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-implied-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,7 +32,9 @@
         <activity android:name=".OutilCreateSupp" />
         <activity android:name=".AjouterJeu" />
         <activity android:name=".AjouterCarte" />
-        <activity android:name=".QuizCarte"></activity>
+        <activity android:name=".QuizCarte" />
+
+        <service android:name=".DownloadManagerActivity" />
     </application>
 
 </manifest>
