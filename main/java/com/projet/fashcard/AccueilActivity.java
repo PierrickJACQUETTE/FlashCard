@@ -1,5 +1,6 @@
 package com.projet.fashcard;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -19,7 +20,12 @@ public class AccueilActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accueil);
+         setContentView(R.layout.activity_accueil);
+
+        Log.d(TAG, "onCreat22e: ");
+        Intent intent = new Intent(this, NotificationService.class);
+        startService(intent);
+        Log.d(TAG, "onCreate: ");
         jeu = (Button) findViewById(R.id.button_apprendre);
         create = (Button) findViewById(R.id.button_create);
         option = (Button) findViewById(R.id.button_opt);
@@ -32,7 +38,6 @@ public class AccueilActivity extends AppCompatActivity {
     }
 
     protected void toCreate(View view) {
-        Log.d(TAG, "toCreate: ");
         Intent intent = new Intent(this, OutilCreateSupp.class);
         startActivity(intent);
     }

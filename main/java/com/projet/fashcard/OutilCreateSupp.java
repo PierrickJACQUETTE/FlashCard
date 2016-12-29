@@ -60,8 +60,7 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
     public void download(View view) {
         Intent intent = new Intent(this, DownloadManagerActivity.class);
         startService(intent);
-        fragment = ListeJeuxFragment.newInstance();
-        manager.beginTransaction().replace(R.id.liste_fragment, fragment).addToBackStack("debut").commit();
+        finish();
     }
 
     public void supp(long position) {

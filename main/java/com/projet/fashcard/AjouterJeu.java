@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,7 +56,6 @@ public class AjouterJeu extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put("nom", n);
         values.put("lastView", date);
-        Log.d("ddd", "ajouter: "+date);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("content").authority(authority).appendPath("jeu_table");

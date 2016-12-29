@@ -15,6 +15,7 @@ public class FCContentProvider extends ContentProvider {
     private static final int INSERTCARTE = 2;
     private static final int SUPPJEU = 3;
     private static final int UPDATELEVEL = 4;
+    private static final int UPDATEJEUDATE = 5;
 
     private FashCardSQLite helper;
 
@@ -25,6 +26,7 @@ public class FCContentProvider extends ContentProvider {
         matcher.addURI(authority, "carte_table", INSERTCARTE);
         matcher.addURI(authority, "supp_jeu/*", SUPPJEU);
         matcher.addURI(authority, "update_level", UPDATELEVEL);
+        matcher.addURI(authority, "update_jeu_date", UPDATEJEUDATE);
     }
 
     public FCContentProvider() {
@@ -111,6 +113,9 @@ public class FCContentProvider extends ContentProvider {
         switch (code) {
             case UPDATELEVEL:
                 updateCount = db.update("carte_table", values, selection, selectionArgs);
+                break;
+            case UPDATEJEUDATE:
+                updateCount = db.update("jeu_table", values, selection, selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Not yet implemented");

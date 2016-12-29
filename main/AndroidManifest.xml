@@ -35,6 +35,8 @@
         <activity android:name=".QuizCarte" />
 
         <service android:name=".DownloadManagerActivity" />
+        <service android:name=".NotificationService" />
+
     </application>
 
 </manifest>
