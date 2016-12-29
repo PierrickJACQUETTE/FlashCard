@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,6 +31,8 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     private long index;
     private SimpleCursorAdapter adapter;
     private LoaderManager manager;
+
+    final static String TAG = "i";
 
     private TextView question;
     private EditText reponse;
@@ -101,9 +104,6 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     }
 
     public void change(String col, String val){
-        /*
-        values.put("dateView", parser.getAttributeValue(0));
-         */
         int id = adapter.getCursor().getInt(0);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();
@@ -133,14 +133,17 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         if(!ques.isEmpty()){
             affiche();
         } else {
+            Toast toast = Toast.makeText(this, "Session quotidienne finie", Toast.LENGTH_SHORT);
             finish();
         }
     }
 
     public void affiche() {
         pos = (int)(Math.random()*ques.size());
-        adapter.getCursor().moveToPosition(ques.get(pos));
-        question.setText(adapter.getCursor().getString(1));
+        Log.d(String.valueOf(pos), "affiche: ");
+        adapter.getCursor().moveToPosition(ques.get(pos)-1);
+        String tmp = adapter.getCursor().getString(1);
+        question.setText(tmp);
     }
 
 
@@ -168,7 +171,7 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
                 ques.add(i);
             }
         }
-        c.moveToPosition(i-1);
+        c.moveToPosition(ques.get(0));
         question.setText(c.getString(1));
     }
 
