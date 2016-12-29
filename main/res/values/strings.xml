@@ -12,8 +12,14 @@
     <string name="accueil_button_ajouter">Ajouter un Jeu</string>
     <string name="accueil_button_parametres">Parametres</string>
 
-    <string name="ajouter_carte_tv_rep">Reponse : </string>
-    <string name="ajouter_carte_tv_que">Question : </string>
+    <string name="ajouter_carte_tv_rep">Reponse :  </string>
+    <string name="ajouter_carte_tv_que">Question :  </string>
+
+    <string name="ajouter_carte_tv_choice">Quelle est la difficultée de la question ? </string>
+    <string name="ajouter_carte_tv_d0">Trivial</string>
+    <string name="ajouter_carte_tv_d1">Facile</string>
+    <string name="ajouter_carte_tv_d2">Moyenne</string>
+    <string name="ajouter_carte_tv_d3">Difficile</string>
     <string name="ajouter_add">Ajouter</string>
 
     <string name="ajouter_jeu_tv_nom">Nom</string>

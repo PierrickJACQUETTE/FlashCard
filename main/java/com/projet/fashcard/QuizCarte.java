@@ -4,17 +4,21 @@ import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class QuizCarte extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -24,10 +28,11 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     private LoaderManager manager;
 
     private TextView question;
-    private TextView reponse;
+    private EditText reponse;
     private Button verifier;
     private Button difficile;
 
+    String diff[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,9 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         }
         adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, new String[]{"question"}, new int[]{android.R.id.text1}, 0);
 
-        reponse = (TextView) findViewById(R.id.quiz_reponse);
+        diff = getResources().getStringArray(R.array.difficult);
+
+        reponse = (EditText) findViewById(R.id.quiz_reponse);
         question = (TextView) findViewById(R.id.quiz_question);
         verifier = (Button) findViewById(R.id.verifier);
         difficile = (Button) findViewById(R.id.difficile);
@@ -50,19 +57,22 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     }
 
     public void verifier(View view) {
-        reponse.setText(adapter.getCursor().getString(2));
-        difficile.setEnabled(true);
-        verifier.setEnabled(false);
+        String giv = reponse.getText().toString();
+        String rep = adapter.getCursor().getString(2);
+        if(giv.equals(rep)){
+            Toast toast = Toast.makeText(this, "Bonne réponse !", Toast.LENGTH_SHORT);
+            toast.show();
+            difficile.setEnabled(true);
+            verifier.setEnabled(false);
+        } else {
+            Toast toast = Toast.makeText(this, "Faux, la bonne réponse est "+rep, Toast.LENGTH_SHORT);
+            toast.show();
+            difficile.setEnabled(true);
+            verifier.setEnabled(false);
+        }
     }
 
-    public void difficile(View view) {
-        difficile.setEnabled(false);
-        verifier.setEnabled(true);
-        reponse.setText("");
-        question.setText("");
-        String newLevel = "difficile";
-
-
+    public void change(String newLevel){
         int id = adapter.getCursor().getInt(0);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();
@@ -71,6 +81,24 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         newValues.put("niveau", newLevel);
         Uri uri = builder.build();
         int c = resolver.update(uri, newValues, "_id= " + id, null);
+    }
+
+    public void difficile(View view) {
+        difficile.setEnabled(false);
+        verifier.setEnabled(true);
+        reponse.setText("");
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.ajouter_carte_tv_choice)
+                .setItems(R.array.difficult, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        change(diff[which]);
+                    }
+                });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
         if (adapter.getCursor().moveToNext()) {
             affiche();
         } else {
