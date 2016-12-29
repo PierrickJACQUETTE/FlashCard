@@ -18,7 +18,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-
 public class DownloadManagerActivity extends Service {
 
     private static String authority = "com.project.fcContentProvider";
@@ -40,7 +39,7 @@ public class DownloadManagerActivity extends Service {
         Uri uri = Uri.parse(adr);
         DownloadManager.Request req = new DownloadManager.Request(uri);
         req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).
-                setDescription("Download file for database").setTitle("Notification").
+                setDescription("Download file for database").
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
         id = dm.enqueue(req);
         try {
@@ -72,14 +71,18 @@ public class DownloadManagerActivity extends Service {
                     case "jeu":
                         values = new ContentValues();
                         values.put("nom", parser.getAttributeValue(0));
+                        values.put("lastView", parser.getAttributeValue(1));
                         builder = new Uri.Builder();
                         builder.scheme("content").authority(authority).appendPath("jeu_table");
                         uri = builder.build();
                         uri = resolver.insert(uri, values);
                         id = ContentUris.parseId(uri);
                         break;
-                    case "question":
+                    case "carte":
                         values = new ContentValues();
+                        values.put("dateView", parser.getAttributeValue(0));
+                        break;
+                    case "question":
                         values.put("question", parser.nextText());
                         break;
                     case "reponse":

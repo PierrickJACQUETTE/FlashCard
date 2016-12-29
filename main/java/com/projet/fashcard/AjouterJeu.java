@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AjouterJeu extends AppCompatActivity {
 
@@ -45,9 +49,15 @@ public class AjouterJeu extends AppCompatActivity {
     }
 
     public void ajouter(View view) {
+        String format = "dd MM yyyy";
+        SimpleDateFormat formater = new SimpleDateFormat(format);
+        Date d = new java.util.Date();
+        String date = formater.format(d);
         String n = nom.getText().toString();
         ContentValues values = new ContentValues();
         values.put("nom", n);
+        values.put("lastView", date);
+        Log.d("ddd", "ajouter: "+date);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("content").authority(authority).appendPath("jeu_table");

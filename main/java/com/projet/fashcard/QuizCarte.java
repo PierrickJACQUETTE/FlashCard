@@ -73,6 +73,13 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     }
 
     public void change(String newLevel){
+        /*
+        String format = "dd MM yyyy";
+        SimpleDateFormat formater = new SimpleDateFormat(format);
+        Date d = new java.util.Date();
+        String date = formater.format(d);
+        values.put("dateView", parser.getAttributeValue(0));
+         */
         int id = adapter.getCursor().getInt(0);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();

@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class AjouterCarte extends AppCompatActivity {
 
     private static String authority = "com.project.fcContentProvider";
@@ -47,6 +50,13 @@ public class AjouterCarte extends AppCompatActivity {
             values.put("reponse", r);
             values.put("niveau", NIVEAU);
             values.put("jeu_id", id);
+
+            String format = "dd MM yyyy";
+            SimpleDateFormat formater = new SimpleDateFormat(format);
+            Date d = new java.util.Date();
+            String date = formater.format(d);
+            values.put("dateView", date);
+
             Uri.Builder builder = new Uri.Builder();
             builder.scheme("content").authority(authority).appendPath("carte_table");
             Uri uri = builder.build();
