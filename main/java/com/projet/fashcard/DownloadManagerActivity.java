@@ -87,7 +87,7 @@ public class DownloadManagerActivity extends Service {
                         break;
                     case "reponse":
                         values.put("reponse", parser.nextText());
-                        values.put("niveau", "facile");
+                        values.put("niveau", "Difficile");
                         values.put("jeu_id", id);
                         builder = new Uri.Builder();
                         builder.scheme("content").authority(authority).appendPath("carte_table");

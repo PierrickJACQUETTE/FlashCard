@@ -12,13 +12,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class QuizCarte extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -33,6 +37,10 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     private Button difficile;
 
     String diff[];
+    ArrayList<Integer> ques;
+    String date;
+    SimpleDateFormat formater;
+    int pos = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +51,14 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         if (bd != null) {
             index = bd.getLong("index");
         }
+
+        String format = "dd MM yyyy";
+        formater = new SimpleDateFormat(format);
+        Date d = new java.util.Date();
+        date = formater.format(d);
+
+        ques = new ArrayList<>();
+
         adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, new String[]{"question"}, new int[]{android.R.id.text1}, 0);
 
         diff = getResources().getStringArray(R.array.difficult);
@@ -54,6 +70,18 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         difficile.setEnabled(false);
         manager = getLoaderManager();
         manager.initLoader(0, null, this);
+    }
+
+    public boolean checkDate(String d, int val){
+        try {
+            Date date1 = formater.parse(date);
+            Date date2 = formater.parse(d);
+            long diff = date2.getTime() - date1.getTime();
+            return (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)%val) == 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void verifier(View view) {
@@ -72,12 +100,8 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         }
     }
 
-    public void change(String newLevel){
+    public void change(String col, String val){
         /*
-        String format = "dd MM yyyy";
-        SimpleDateFormat formater = new SimpleDateFormat(format);
-        Date d = new java.util.Date();
-        String date = formater.format(d);
         values.put("dateView", parser.getAttributeValue(0));
          */
         int id = adapter.getCursor().getInt(0);
@@ -85,9 +109,10 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         Uri.Builder builder = new Uri.Builder();
         builder.scheme("content").authority(authority).appendPath("update_level");
         ContentValues newValues = new ContentValues();
-        newValues.put("niveau", newLevel);
+        newValues.put(col, val);
         Uri uri = builder.build();
         int c = resolver.update(uri, newValues, "_id= " + id, null);
+        ques.remove(pos);
     }
 
     public void difficile(View view) {
@@ -100,13 +125,12 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         builder.setTitle(R.string.ajouter_carte_tv_choice)
                 .setItems(R.array.difficult, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        change(diff[which]);
+                        change("niveau", diff[which]);
                     }
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
-
-        if (adapter.getCursor().moveToNext()) {
+        if(!ques.isEmpty()){
             affiche();
         } else {
             finish();
@@ -114,6 +138,8 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     }
 
     public void affiche() {
+        pos = (int)(Math.random()*ques.size());
+        adapter.getCursor().moveToPosition(ques.get(pos));
         question.setText(adapter.getCursor().getString(1));
     }
 
@@ -123,15 +149,27 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         Uri uri;
         Uri.Builder builder = new Uri.Builder();
         uri = builder.scheme("content").authority(authority).appendPath("carte_table").build();
-        Log.d("ci", "onCreateLoader: ");
-        return new CursorLoader(this, uri, new String[]{"_id", "question", "reponse", "niveau"}, "jeu_id= " + index, null, null);
+        return new CursorLoader(this, uri, new String[]{"_id", "question", "reponse", "niveau", "dateView"}, "jeu_id= " + index, null, null);
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
-        adapter.getCursor().moveToFirst();
-        affiche();
+        Cursor c = adapter.getCursor();
+        int i = 0;
+        while(c.moveToNext()){
+            String tmp = c.getString(3);
+            i = Integer.parseInt(c.getString(0));
+            if(tmp.equals("Difficile")){
+                ques.add(i);
+            } else if(tmp.equals("Moyenne") && checkDate(c.getString(4), 2)){
+                ques.add(i);
+            } else if(tmp.equals("Facile") && checkDate(c.getString(4), 4)){
+                ques.add(i);
+            }
+        }
+        c.moveToPosition(i-1);
+        question.setText(c.getString(1));
     }
 
     @Override

@@ -22,7 +22,7 @@ public class AjouterCarte extends AppCompatActivity {
     private EditText reponse;
     private EditText question;
     private Long id;
-    private final String NIVEAU = "facile";
+    private final String NIVEAU = "Difficile";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
