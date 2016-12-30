@@ -7,6 +7,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,7 +18,7 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AjouterCarte extends AppCompatActivity {
+public class AjouterCarteActivity extends AppCompatActivity {
 
     private static String authority = "com.project.fcContentProvider";
     private Button ajouter;
@@ -33,6 +36,10 @@ public class AjouterCarte extends AppCompatActivity {
         if (bd != null) {
             id = bd.getLong("id");
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         ajouter = (Button) findViewById(R.id.bajouter);
         reponse = (EditText) findViewById(R.id.etReponse);
         question = (EditText) findViewById(R.id.etQuestion);
@@ -71,4 +78,33 @@ public class AjouterCarte extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.miAppr:
+                intent = new Intent(this, ListeActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.miCreate:
+                intent = new Intent(this, OutilCreateSuppActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.miPref:
+                intent = new Intent(this, OptionActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }

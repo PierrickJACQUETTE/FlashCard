@@ -42,7 +42,7 @@ public class ListeActivity extends AppCompatActivity implements ListeJeuxFragmen
         newValues.put("lastView", date);
         Uri uri = builder.build();
         int c = resolver.update(uri, newValues, "_id= " + index, null);
-        Intent intent = new Intent(this, QuizCarte.class);
+        Intent intent = new Intent(this, QuizCarteActivity.class);
         intent.putExtra("index", index);
         startActivity(intent);
     }

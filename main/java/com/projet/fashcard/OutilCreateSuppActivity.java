@@ -13,7 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragment.OnFragmentInteractionListener {
+public class OutilCreateSuppActivity extends AppCompatActivity implements ListeJeuxFragment.OnFragmentInteractionListener {
 
     private static String authority = "com.project.fcContentProvider";
     private Button buttonPlus;
@@ -44,21 +44,21 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
 
 
     public void ajouterJeu(View view) {
-        Intent intent = new Intent(this, AjouterJeu.class);
+        Intent intent = new Intent(this, AjouterJeuActivity.class);
         startActivityForResult(intent, 1);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1) {
-            if (resultCode == AjouterJeu.RESULT_OK) {
+            if (resultCode == AjouterJeuActivity.RESULT_OK) {
                 finish();
             }
         }
     }
 
     public void download(View view) {
-        Intent intent = new Intent(this, DownloadManagerActivity.class);
+        Intent intent = new Intent(this, DownloadManagerService.class);
         startService(intent);
         finish();
     }
@@ -86,7 +86,7 @@ public class OutilCreateSupp extends AppCompatActivity implements ListeJeuxFragm
         builder.setNegativeButton(R.string.outilCreateSupp_dialog_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
 
-                Intent intent = new Intent(OutilCreateSupp.this, AjouterCarte.class);
+                Intent intent = new Intent(OutilCreateSuppActivity.this, AjouterCarteActivity.class);
                 intent.putExtra("id", position);
                 startActivity(intent);
                 finish();

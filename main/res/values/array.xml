@@ -6,4 +6,28 @@
         <item>"Moyenne"</item>
         <item>"Difficile"</item>
     </string-array>
+
+    <string-array name="timeArray">
+        <item>"30 secondes"</item>
+        <item>"1 minute"</item>
+        <item>"2 minutes"</item>
+    </string-array>
+
+    <string-array name="timeValues">
+        <item>"30"</item>
+        <item>"60"</item>
+        <item>"120"</item>
+    </string-array>
+
+    <string-array name="notiArray">
+        <item>"1 jour"</item>
+        <item>"2 jours"</item>
+        <item>"5 jours"</item>
+    </string-array>
+
+    <string-array name="notiValues">
+        <item>"1"</item>
+        <item>"2"</item>
+        <item>"5"</item>
+    </string-array>
 </resources>

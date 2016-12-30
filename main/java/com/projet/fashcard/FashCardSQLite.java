@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class FashCardSQLite extends SQLiteOpenHelper {
 
-    private static int VERSION = 9;
+    private static int VERSION = 10;
     private static FashCardSQLite instance;
     private static String bd = "FCBD";
     private String carte_table = "create table carte_table( " +

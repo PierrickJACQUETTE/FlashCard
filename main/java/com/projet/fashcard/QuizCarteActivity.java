@@ -7,12 +7,17 @@ import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,9 +28,11 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class QuizCarte extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class QuizCarteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static String authority = "com.project.fcContentProvider";
     private long index;
@@ -39,11 +46,14 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
     private Button verifier;
     private Button difficile;
 
+    Timer timer;
+    MyTimerTask myTimerTask;
+
     String diff[];
     ArrayList<Integer> ques;
     String date;
     SimpleDateFormat formater;
-    int pos = 0;
+    int pos = 0, ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,9 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         if (bd != null) {
             index = bd.getLong("index");
         }
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         String format = "dd MM yyyy";
         formater = new SimpleDateFormat(format);
@@ -101,6 +114,8 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
             difficile.setEnabled(true);
             verifier.setEnabled(false);
         }
+        change("dateView", date);
+        ques.remove(pos);
     }
 
     public void change(String col, String val){
@@ -112,7 +127,6 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
         newValues.put(col, val);
         Uri uri = builder.build();
         int c = resolver.update(uri, newValues, "_id= " + id, null);
-        ques.remove(pos);
     }
 
     public void difficile(View view) {
@@ -129,21 +143,39 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
                     }
                 });
         AlertDialog dialog = builder.create();
-        dialog.show();
         if(!ques.isEmpty()){
+            dialog.show();
             affiche();
         } else {
             Toast toast = Toast.makeText(this, "Session quotidienne finie", Toast.LENGTH_SHORT);
+            toast.show();
+            if(timer != null){
+                timer.cancel();
+            }
             finish();
         }
     }
 
     public void affiche() {
-        pos = (int)(Math.random()*ques.size());
-        Log.d(String.valueOf(pos), "affiche: ");
-        adapter.getCursor().moveToPosition(ques.get(pos)-1);
-        String tmp = adapter.getCursor().getString(1);
-        question.setText(tmp);
+        if(!ques.isEmpty()){
+            pos = (int)(Math.random()*ques.size());
+            adapter.getCursor().moveToPosition(ques.get(pos) - ref);
+            String ch = adapter.getCursor().getString(0);
+            Log.d(ch, "affiche-id: ");
+            String tmp = adapter.getCursor().getString(1);
+            question.setText(tmp);
+            if(timer != null){
+                timer.cancel();
+            }
+            timer = new Timer();
+            myTimerTask = new MyTimerTask();
+            SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+            String t = SP.getString("timer", "1");
+            timer.schedule(myTimerTask, 1000*Integer.parseInt(t));
+        } else {
+            finish();
+        }
+
     }
 
 
@@ -157,10 +189,16 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
         adapter.swapCursor(data);
         Cursor c = adapter.getCursor();
         int i = 0;
+        boolean first = true;
         while(c.moveToNext()){
+            if(first){
+                ref = c.getInt(0);
+                first = false;
+            }
             String tmp = c.getString(3);
             i = Integer.parseInt(c.getString(0));
             if(tmp.equals("Difficile")){
@@ -171,12 +209,60 @@ public class QuizCarte extends AppCompatActivity implements LoaderManager.Loader
                 ques.add(i);
             }
         }
-        c.moveToPosition(ques.get(0));
-        question.setText(c.getString(1));
+        affiche();
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    class MyTimerTask extends TimerTask {
+        @Override
+        public void run() {
+            runOnUiThread(new Runnable(){
+                @Override
+                public void run() {
+                    verifier(null);
+                }});
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
+        switch (item.getItemId()) {
+            case R.id.miAppr:
+                intent = new Intent(this, ListeActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.miCreate:
+                intent = new Intent(this, OutilCreateSuppActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            case R.id.miPref:
+                intent = new Intent(this, OptionActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if(timer != null){
+            timer.cancel();
+        }
+        super.onDestroy();
     }
 }

@@ -9,9 +9,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -20,7 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-public class DownloadManagerActivity extends Service {
+public class DownloadManagerService extends Service {
 
     private static String authority = "com.project.fcContentProvider";
     private DownloadManager dm;
@@ -36,7 +39,8 @@ public class DownloadManagerActivity extends Service {
 
     private void loadFromInternet() {
         dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        String adr = "https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1";
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String adr = SP.getString("url", "https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1");
         Uri uri = Uri.parse(adr);
         DownloadManager.Request req = new DownloadManager.Request(uri);
         req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).

@@ -7,11 +7,13 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
@@ -53,7 +55,8 @@ public class NotificationService extends Service {
         c.registerListener(0, new android.support.v4.content.Loader.OnLoadCompleteListener<Cursor>() {
             @Override
             public void onLoadComplete(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
-                int longtemps = 1;
+                SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+                int longtemps = Integer.parseInt(SP.getString("noti", "1"));
 
                 String mssgNotification = "";
                 int cmpt = 0;

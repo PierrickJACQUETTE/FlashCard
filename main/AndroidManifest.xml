@@ -29,14 +29,15 @@
             android:exported="true" />
 
         <activity android:name=".ListeActivity" />
-        <activity android:name=".OutilCreateSupp" />
-        <activity android:name=".AjouterJeu" />
-        <activity android:name=".AjouterCarte" />
-        <activity android:name=".QuizCarte" />
+        <activity android:name=".OutilCreateSuppActivity" />
+        <activity android:name=".AjouterJeuActivity" />
+        <activity android:name=".AjouterCarteActivity" />
+        <activity android:name=".QuizCarteActivity" />
 
-        <service android:name=".DownloadManagerActivity" />
+        <service android:name=".DownloadManagerService" />
         <service android:name=".NotificationService" />
 
+        <activity android:name=".OptionActivity"></activity>
     </application>
 
 </manifest>
