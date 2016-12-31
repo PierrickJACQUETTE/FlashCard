@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -80,7 +81,6 @@ public class NotificationService extends Service {
             }
         });
         c.startLoading();
-
     }
 
     @Override
@@ -88,7 +88,9 @@ public class NotificationService extends Service {
         if (c != null) {
             c.cancelLoad();
             c.stopLoading();
+
         }
+        stopSelf();
         super.onDestroy();
     }
 
@@ -117,6 +119,7 @@ public class NotificationService extends Service {
                         .build();
         ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE))
                 .notify(1, notification);
+        onDestroy();
     }
 }
 
