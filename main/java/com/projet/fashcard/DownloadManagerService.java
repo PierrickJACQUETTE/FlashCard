@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -25,7 +26,6 @@ import java.io.IOException;
 
 public class DownloadManagerService extends Service {
 
-    private static String authority = "com.project.fcContentProvider";
     private DownloadManager dm;
     private long id2;
     private XmlPullParser parser;
@@ -46,6 +46,7 @@ public class DownloadManagerService extends Service {
         req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).
                 setDescription("Download file for database").
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
+
         id2 = dm.enqueue(req);
         registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
@@ -76,7 +77,6 @@ public class DownloadManagerService extends Service {
     public void onDestroy() {
         unregisterReceiver(onComplete);
         super.onDestroy();
-        stopSelf();
     }
 
     public void parseFile() throws XmlPullParserException, IOException {
@@ -94,7 +94,7 @@ public class DownloadManagerService extends Service {
                         values.put("nom", parser.getAttributeValue(0));
                         values.put("lastView", parser.getAttributeValue(1));
                         builder = new Uri.Builder();
-                        builder.scheme("content").authority(authority).appendPath("jeu_table");
+                        builder.scheme("content").authority(getString(R.string.authority)).appendPath("jeu_table");
                         uri = builder.build();
                         uri = resolver.insert(uri, values);
                         id = ContentUris.parseId(uri);
@@ -111,7 +111,7 @@ public class DownloadManagerService extends Service {
                         values.put("niveau", "Difficile");
                         values.put("jeu_id", id);
                         builder = new Uri.Builder();
-                        builder.scheme("content").authority(authority).appendPath("carte_table");
+                        builder.scheme("content").authority(getString(R.string.authority)).appendPath("carte_table");
                         uri = builder.build();
                         uri = resolver.insert(uri, values);
                         break;
@@ -120,6 +120,7 @@ public class DownloadManagerService extends Service {
             }
             event = parser.next();
         }
+        stopSelf();
     }
 
     @Override

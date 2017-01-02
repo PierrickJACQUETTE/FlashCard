@@ -12,6 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ajouter_carte_titre"
+        android:textSize="@dimen/titre"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"

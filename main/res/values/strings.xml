@@ -12,15 +12,23 @@
     <string name="accueil_button_ajouter">Ajouter un Jeu</string>
     <string name="accueil_button_parametres">Parametres</string>
 
+    <string name="ajouter_carte_titre">Rentrer le contenu</string>
     <string name="ajouter_carte_tv_rep">Reponse :  </string>
     <string name="ajouter_carte_tv_que">Question :  </string>
-
     <string name="ajouter_carte_tv_choice">Quelle est la difficultée de la question ? </string>
     <string name="ajouter_add">Ajouter</string>
 
+
     <string name="ajouter_jeu_tv_nom">Nom</string>
+    <string name="ajouter_jeu_titre">Quel est le nom du jeu ?</string>
 
     <string name="outil_create_supp_button_plus">+</string>
     <string name="outil_create_supp_button_dowload">Import</string>
+
+    <string name="liste">Vos jeux : </string>
+
+    <string name="quiz_carte_titre">Quel est votre réponse ?</string>
+
+    <string name="authority">com.project.fcContentProvider</string>
 
 </resources>

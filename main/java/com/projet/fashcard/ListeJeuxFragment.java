@@ -71,16 +71,16 @@ public class ListeJeuxFragment extends ListFragment implements LoaderManager.Loa
     public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
     }
 
-    public interface OnFragmentInteractionListener {
-        void onJeuxSelection(long index);
-
-        void onFragmentInteraction(Uri uri);
-    }
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         if (mListener != null) {
             mListener.onJeuxSelection(id);
         }
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onJeuxSelection(long index);
+
+        void onFragmentInteraction(Uri uri);
     }
 }

@@ -11,6 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/quiz_carte_titre"
+        android:textSize="@dimen/titre"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"/>
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -48,17 +56,27 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Verifier"
         android:id="@+id/verifier"
-        android:onClick="verifier" />
+        android:onClick="verifier"
+        android:layout_alignParentLeft="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Suivante"
         android:id="@+id/difficile"
-        android:onClick="difficile" />
+        android:onClick="difficile"
+        android:layout_alignParentRight="true"/>
+
+    </LinearLayout>
+
 </LinearLayout>

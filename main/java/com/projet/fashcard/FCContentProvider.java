@@ -10,7 +10,7 @@ import android.net.Uri;
 
 public class FCContentProvider extends ContentProvider {
 
-    private static String authority = "com.project.fcContentProvider";
+    private static final String authority = "com.project.fcContentProvider";
     private static final int INSERTJEU = 1;
     private static final int INSERTCARTE = 2;
     private static final int SUPPJEU = 3;

@@ -17,7 +17,6 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 public class NotificationService extends Service {
 
-    private static String authority = "com.project.fcContentProvider";
     CursorLoader c;
 
     public boolean checkDate(int longtemps, String dateBase) {
@@ -51,7 +49,7 @@ public class NotificationService extends Service {
         super.onCreate();
         Uri uri;
         Uri.Builder builder = new Uri.Builder();
-        uri = builder.scheme("content").authority(authority).appendPath("jeu_table").build();
+        uri = builder.scheme("content").authority(getString(R.string.authority)).appendPath("jeu_table").build();
         c = new CursorLoader(this, uri, new String[]{"_id", "nom", "lastView"}, null, null, null);
         c.registerListener(0, new android.support.v4.content.Loader.OnLoadCompleteListener<Cursor>() {
             @Override

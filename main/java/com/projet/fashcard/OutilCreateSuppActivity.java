@@ -9,13 +9,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-public class OutilCreateSuppActivity extends AppCompatActivity implements ListeJeuxFragment.OnFragmentInteractionListener {
+public class OutilCreateSuppActivity extends MenuActivity implements ListeJeuxFragment.OnFragmentInteractionListener {
 
-    private static String authority = "com.project.fcContentProvider";
     private Button buttonPlus;
     private Button buttonDowload;
 
@@ -27,6 +26,10 @@ public class OutilCreateSuppActivity extends AppCompatActivity implements ListeJ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outil_create_supp);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         buttonPlus = (Button) findViewById(R.id.buttonPlus);
         buttonDowload = (Button) findViewById(R.id.buttonDowload);
         manager = getSupportFragmentManager();
@@ -65,7 +68,7 @@ public class OutilCreateSuppActivity extends AppCompatActivity implements ListeJ
 
     public void supp(long position) {
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme("content").authority(authority).appendPath("supp_jeu");
+        builder.scheme("content").authority(getString(R.string.authority)).appendPath("supp_jeu");
         ContentUris.appendId(builder, position);
         Uri uri = builder.build();
         int res = getContentResolver().delete(uri, null, null);

@@ -13,11 +13,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,9 +29,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
-public class QuizCarteActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class QuizCarteActivity extends MenuActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static String authority = "com.project.fcContentProvider";
     private long index;
     private SimpleCursorAdapter adapter;
     private LoaderManager manager;
@@ -88,12 +84,12 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
         manager.initLoader(0, null, this);
     }
 
-    public boolean checkDate(String d, int val){
+    public boolean checkDate(String d, int val) {
         try {
             Date date1 = formater.parse(date);
             Date date2 = formater.parse(d);
             long diff = date2.getTime() - date1.getTime();
-            return (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)%val) == 0;
+            return (TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS) % val) == 0;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -103,13 +99,13 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
     public void verifier(View view) {
         String giv = reponse.getText().toString();
         String rep = adapter.getCursor().getString(2);
-        if(giv.equals(rep)){
+        if (giv.equals(rep)) {
             Toast toast = Toast.makeText(this, "Bonne réponse !", Toast.LENGTH_SHORT);
             toast.show();
             difficile.setEnabled(true);
             verifier.setEnabled(false);
         } else {
-            Toast toast = Toast.makeText(this, "Faux, la bonne réponse est "+rep, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(this, "Faux, la bonne réponse est " + rep, Toast.LENGTH_SHORT);
             toast.show();
             difficile.setEnabled(true);
             verifier.setEnabled(false);
@@ -118,11 +114,11 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
         ques.remove(pos);
     }
 
-    public void change(String col, String val){
+    public void change(String col, String val) {
         int id = adapter.getCursor().getInt(0);
         ContentResolver resolver = getContentResolver();
         Uri.Builder builder = new Uri.Builder();
-        builder.scheme("content").authority(authority).appendPath("update_level");
+        builder.scheme("content").authority(getString(R.string.authority)).appendPath("update_level");
         ContentValues newValues = new ContentValues();
         newValues.put(col, val);
         Uri uri = builder.build();
@@ -143,13 +139,13 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
                     }
                 });
         AlertDialog dialog = builder.create();
-        if(!ques.isEmpty()){
+        if (!ques.isEmpty()) {
             dialog.show();
             affiche();
         } else {
             Toast toast = Toast.makeText(this, "Session quotidienne finie", Toast.LENGTH_SHORT);
             toast.show();
-            if(timer != null){
+            if (timer != null) {
                 timer.cancel();
             }
             finish();
@@ -157,21 +153,21 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
     }
 
     public void affiche() {
-        if(!ques.isEmpty()){
-            pos = (int)(Math.random()*ques.size());
+        if (!ques.isEmpty()) {
+            pos = (int) (Math.random() * ques.size());
             adapter.getCursor().moveToPosition(ques.get(pos) - ref);
             String ch = adapter.getCursor().getString(0);
             Log.d(ch, "affiche-id: ");
             String tmp = adapter.getCursor().getString(1);
             question.setText(tmp);
-            if(timer != null){
+            if (timer != null) {
                 timer.cancel();
             }
             timer = new Timer();
             myTimerTask = new MyTimerTask();
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
             String t = SP.getString("timer", "1");
-            timer.schedule(myTimerTask, 1000*Integer.parseInt(t));
+            timer.schedule(myTimerTask, 1000 * Integer.parseInt(t));
         } else {
             finish();
         }
@@ -183,7 +179,7 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri;
         Uri.Builder builder = new Uri.Builder();
-        uri = builder.scheme("content").authority(authority).appendPath("carte_table").build();
+        uri = builder.scheme("content").authority(getString(R.string.authority)).appendPath("carte_table").build();
         return new CursorLoader(this, uri, new String[]{"_id", "question", "reponse", "niveau", "dateView"}, "jeu_id= " + index, null, null);
     }
 
@@ -194,18 +190,18 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
         Cursor c = adapter.getCursor();
         int i = 0;
         boolean first = true;
-        while(c.moveToNext()){
-            if(first){
+        while (c.moveToNext()) {
+            if (first) {
                 ref = c.getInt(0);
                 first = false;
             }
             String tmp = c.getString(3);
             i = Integer.parseInt(c.getString(0));
-            if(tmp.equals("Difficile")){
+            if (tmp.equals("Difficile")) {
                 ques.add(i);
-            } else if(tmp.equals("Moyenne") && checkDate(c.getString(4), 2)){
+            } else if (tmp.equals("Moyenne") && checkDate(c.getString(4), 2)) {
                 ques.add(i);
-            } else if(tmp.equals("Facile") && checkDate(c.getString(4), 4)){
+            } else if (tmp.equals("Facile") && checkDate(c.getString(4), 4)) {
                 ques.add(i);
             }
         }
@@ -220,47 +216,18 @@ public class QuizCarteActivity extends AppCompatActivity implements LoaderManage
     class MyTimerTask extends TimerTask {
         @Override
         public void run() {
-            runOnUiThread(new Runnable(){
+            runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     verifier(null);
-                }});
-        }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent;
-        switch (item.getItemId()) {
-            case R.id.miAppr:
-                intent = new Intent(this, ListeActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.miCreate:
-                intent = new Intent(this, OutilCreateSuppActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            case R.id.miPref:
-                intent = new Intent(this, OptionActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                }
+            });
         }
     }
 
     @Override
     public void onDestroy() {
-        if(timer != null){
+        if (timer != null) {
             timer.cancel();
         }
         super.onDestroy();
