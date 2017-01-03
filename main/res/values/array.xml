@@ -14,9 +14,9 @@
     </string-array>
 
     <string-array name="timeValues">
-        <item>"30"</item>
-        <item>"60"</item>
-        <item>"120"</item>
+        <item>30</item>
+        <item>60</item>
+        <item>120</item>
     </string-array>
 
     <string-array name="notiArray">
@@ -26,8 +26,8 @@
     </string-array>
 
     <string-array name="notiValues">
-        <item>"1"</item>
-        <item>"2"</item>
-        <item>"5"</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
     </string-array>
 </resources>

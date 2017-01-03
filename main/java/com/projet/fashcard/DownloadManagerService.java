@@ -3,9 +3,7 @@ package com.projet.fashcard;
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
-import android.content.ContentResolver;
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,7 +12,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -30,26 +27,6 @@ public class DownloadManagerService extends Service {
     private long id2;
     private XmlPullParser parser;
     private String name = "import.xml";
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        loadFromInternet();
-    }
-
-    private void loadFromInternet() {
-        dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String adr = SP.getString("url", "https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1");
-        Uri uri = Uri.parse(adr);
-        DownloadManager.Request req = new DownloadManager.Request(uri);
-        req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).
-                setDescription("Download file for database").
-                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
-
-        id2 = dm.enqueue(req);
-        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-    }
 
     BroadcastReceiver onComplete = new BroadcastReceiver() {
         @Override
@@ -74,6 +51,26 @@ public class DownloadManagerService extends Service {
     };
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        loadFromInternet();
+    }
+
+    private void loadFromInternet() {
+        dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+        SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String adr = SP.getString("url", getString(R.string.dowload));
+        Uri uri = Uri.parse(adr);
+        DownloadManager.Request req = new DownloadManager.Request(uri);
+        req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).
+                setDescription("Download file for database").
+                setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
+
+        id2 = dm.enqueue(req);
+        registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+
+    @Override
     public void onDestroy() {
         unregisterReceiver(onComplete);
         super.onDestroy();
@@ -82,38 +79,26 @@ public class DownloadManagerService extends Service {
     public void parseFile() throws XmlPullParserException, IOException {
         int event = parser.getEventType();
         long id = -1;
-        ContentResolver resolver = getContentResolver();
-        ContentValues values = new ContentValues();
-        Uri.Builder builder;
-        Uri uri;
+        String date = "";
+        String question = "";
+        LienProvider lien;
         while (event != XmlPullParser.END_DOCUMENT) {
             if (event == XmlPullParser.START_TAG) {
                 switch (parser.getName()) {
                     case "jeu":
-                        values = new ContentValues();
-                        values.put("nom", parser.getAttributeValue(0));
-                        values.put("lastView", parser.getAttributeValue(1));
-                        builder = new Uri.Builder();
-                        builder.scheme("content").authority(getString(R.string.authority)).appendPath("jeu_table");
-                        uri = builder.build();
-                        uri = resolver.insert(uri, values);
+                        lien = new LienProvider(this);
+                        Uri uri = lien.insertLienJeu(parser.getAttributeValue(0), parser.getAttributeValue(1));
                         id = ContentUris.parseId(uri);
                         break;
                     case "carte":
-                        values = new ContentValues();
-                        values.put("dateView", parser.getAttributeValue(0));
+                        date = parser.getAttributeValue(0);
                         break;
                     case "question":
-                        values.put("question", parser.nextText());
+                        question = parser.nextText();
                         break;
                     case "reponse":
-                        values.put("reponse", parser.nextText());
-                        values.put("niveau", "Difficile");
-                        values.put("jeu_id", id);
-                        builder = new Uri.Builder();
-                        builder.scheme("content").authority(getString(R.string.authority)).appendPath("carte_table");
-                        uri = builder.build();
-                        uri = resolver.insert(uri, values);
+                        lien = new LienProvider(this);
+                        lien.insertLienCarte(question, parser.nextText(), id);
                         break;
                 }
 

@@ -3,79 +3,80 @@
     android:id="@+id/activity_quiz_carte"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.projet.fashcard.QuizCarteActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.projet.fashcard.QuizCarteActivity">
 
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/quiz_carte_titre"
-        android:textSize="@dimen/titre"
         android:layout_gravity="center_horizontal"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:text="@string/quiz_carte_titre"
+        android:textSize="@dimen/titre" />
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:paddingTop="@dimen/activity_vertical_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/ajouter_carte_tv_que"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+            android:text="@string/ajouter_carte_tv_que" />
 
         <TextView
+            android:id="@+id/quiz_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/quiz_question" />
+            android:layout_height="wrap_content" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text= "@string/ajouter_carte_tv_rep"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"/>
+            android:text="@string/ajouter_carte_tv_rep" />
 
         <EditText
+            android:id="@+id/quiz_reponse"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/quiz_reponse" />
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Verifier"
-        android:id="@+id/verifier"
-        android:onClick="verifier"
-        android:layout_alignParentLeft="true" />
+        <Button
+            android:id="@+id/verifier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:onClick="verifier"
+            android:text="Verifier" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Suivante"
-        android:id="@+id/difficile"
-        android:onClick="difficile"
-        android:layout_alignParentRight="true"/>
+        <Button
+            android:id="@+id/difficile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:onClick="difficile"
+            android:text="Suivante" />
 
     </LinearLayout>
 

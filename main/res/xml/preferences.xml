@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <EditTextPreference
-        android:title="Votre URL"
+        android:defaultValue="@string/dowload"
         android:key="url"
-        android:defaultValue="https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1"
-        android:summary="Vous pouvez rentrer une url perso pour importer un jeu"/>
+        android:summary="Vous pouvez rentrer une url perso pour importer un jeu"
+        android:title="Votre URL" />
     <ListPreference
-        android:title="Valeur du timer"
-        android:summary="Selectionner la durée maximale pour les réponses"
-        android:key="timer"
-        android:defaultValue="1"
+        android:defaultValue="30"
         android:entries="@array/timeArray"
-        android:entryValues="@array/timeValues" />
+        android:entryValues="@array/timeValues"
+        android:key="timer"
+        android:summary="Selectionner la durée maximale pour les réponses"
+        android:title="Valeur du timer" />
 
     <ListPreference
-        android:title="Délai de Notification"
-        android:summary="Selectionner le délai pour les notifications"
-        android:key="noti"
         android:defaultValue="1"
         android:entries="@array/notiArray"
-        android:entryValues="@array/notiValues" />
+        android:entryValues="@array/notiValues"
+        android:key="noti"
+        android:summary="Selectionner le délai pour les notifications"
+        android:title="Délai de Notification" />
 </PreferenceScreen>

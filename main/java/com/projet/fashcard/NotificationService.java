@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class NotificationService extends Service {
 
-    CursorLoader c;
+    private CursorLoader c;
 
     public boolean checkDate(int longtemps, String dateBase) {
         try {

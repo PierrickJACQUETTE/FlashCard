@@ -4,57 +4,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AccueilActivity"
-    android:weightSum="1">
+    android:weightSum="1"
+    tools:context=".AccueilActivity">
 
     <include
         layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
         android:layout_weight="0.50"
+        android:orientation="vertical"
         android:weightSum="1">
 
         <TextView
+            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/accueil_title"
-            android:textSize="@dimen/titre"
-            android:id="@+id/textView"
             android:layout_gravity="center_horizontal"
             android:layout_weight="0.47"
-            android:gravity="center"/>
+            android:gravity="center"
+            android:text="@string/accueil_title"
+            android:textSize="@dimen/titre" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/accueil_button_apprendre"
-            android:textSize="20dp"
             android:id="@+id/button_apprendre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:onClick="toJeu"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/accueil_button_apprendre"
+            android:textSize="20dp" />
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/accueil_button_ajouter"
-            android:textSize="20dp"
             android:id="@+id/button_create"
-            android:onClick="toCreate"
-            android:layout_gravity="center_horizontal" />
-
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/accueil_button_parametres"
-            android:textSize="20dp"
+            android:layout_gravity="center_horizontal"
+            android:onClick="toCreate"
+            android:text="@string/accueil_button_ajouter"
+            android:textSize="20dp" />
+
+        <Button
             android:id="@+id/button_opt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:onClick="toOption"
-            android:layout_gravity="center_horizontal" />
+            android:text="@string/accueil_button_parametres"
+            android:textSize="20dp" />
     </LinearLayout>
 </LinearLayout>

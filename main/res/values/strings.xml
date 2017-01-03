@@ -6,6 +6,10 @@
     <string name="outilCreateSupp_dialog_title">Que voulez-vous faire ?</string>
     <string name="outilCreateSupp_dialog_supp">Supprimer le jeu</string>
     <string name="outilCreateSupp_dialog_add">Ajouter une carte</string>
+    <string name="outil_create_supp_button_plus">+</string>
+    <string name="outil_create_supp_button_dowload">Import</string>
+    <string name="outil_create_supp_param">Vous avez désactivé une permission</string>
+    <string name="outil_create_supp_perm">Une permission est nécessaire pour stocker le fichier télécharger</string>
 
     <string name="accueil_title">Testez vos connaissances</string>
     <string name="accueil_button_apprendre">Apprendre</string>
@@ -18,17 +22,14 @@
     <string name="ajouter_carte_tv_choice">Quelle est la difficultée de la question ? </string>
     <string name="ajouter_add">Ajouter</string>
 
-
     <string name="ajouter_jeu_tv_nom">Nom</string>
     <string name="ajouter_jeu_titre">Quel est le nom du jeu ?</string>
-
-    <string name="outil_create_supp_button_plus">+</string>
-    <string name="outil_create_supp_button_dowload">Import</string>
 
     <string name="liste">Vos jeux : </string>
 
     <string name="quiz_carte_titre">Quel est votre réponse ?</string>
 
     <string name="authority">com.project.fcContentProvider</string>
+    <string name="dowload">https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1</string>
 
 </resources>

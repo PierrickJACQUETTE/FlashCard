@@ -23,15 +23,15 @@ public class FashCardSQLite extends SQLiteOpenHelper {
             "_id integer primary key" +
             ");";
 
+    private FashCardSQLite(Context context) {
+        super(context, bd, null, VERSION);
+    }
+
     public static FashCardSQLite getInstance(Context context) {
         if (instance == null) {
             instance = new FashCardSQLite(context);
         }
         return instance;
-    }
-
-    private FashCardSQLite(Context context) {
-        super(context, bd, null, VERSION);
     }
 
     @Override

@@ -1,9 +1,6 @@
 package com.projet.fashcard;
 
 import android.app.Activity;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -11,9 +8,6 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class AjouterJeuActivity extends MenuActivity {
 
@@ -49,19 +43,8 @@ public class AjouterJeuActivity extends MenuActivity {
     }
 
     public void ajouter(View view) {
-        String format = "dd MM yyyy";
-        SimpleDateFormat formater = new SimpleDateFormat(format);
-        Date d = new java.util.Date();
-        String date = formater.format(d);
-        String n = nom.getText().toString();
-        ContentValues values = new ContentValues();
-        values.put("nom", n);
-        values.put("lastView", date);
-        ContentResolver resolver = getContentResolver();
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("content").authority(getString(R.string.authority)).appendPath("jeu_table");
-        Uri uri = builder.build();
-        uri = resolver.insert(uri, values);
+        LienProvider lien = new LienProvider(this);
+        lien.insertLienJeu(nom.getText().toString());
         nom.getText().clear();
         setResult(Activity.RESULT_OK);
         finish();

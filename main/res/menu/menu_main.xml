@@ -3,17 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/miAppr"
-        app:showAsAction="ifRoom"
-        android:title="@string/accueil_button_apprendre">
-    </item>
+        android:title="@string/accueil_button_apprendre"
+        app:showAsAction="ifRoom"></item>
     <item
         android:id="@+id/miCreate"
-        app:showAsAction="ifRoom|withText"
-        android:title="Modif.">
-    </item>
+        android:title="Modif."
+        app:showAsAction="ifRoom|withText"></item>
     <item
         android:id="@+id/miPref"
-        app:showAsAction="ifRoom|withText"
-        android:title="@string/accueil_button_parametres">
-    </item>
+        android:title="@string/accueil_button_parametres"
+        app:showAsAction="ifRoom|withText"></item>
 </menu>

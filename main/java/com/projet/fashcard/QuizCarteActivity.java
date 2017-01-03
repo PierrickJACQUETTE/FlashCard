@@ -35,21 +35,16 @@ public class QuizCarteActivity extends MenuActivity implements LoaderManager.Loa
     private SimpleCursorAdapter adapter;
     private LoaderManager manager;
 
-    final static String TAG = "i";
-
     private TextView question;
     private EditText reponse;
     private Button verifier;
     private Button difficile;
+    private Timer timer;
+    private MyTimerTask myTimerTask;
 
-    Timer timer;
-    MyTimerTask myTimerTask;
-
-    String diff[];
-    ArrayList<Integer> ques;
-    String date;
-    SimpleDateFormat formater;
-    int pos = 0, ref;
+    private String diff[];
+    private ArrayList<Integer> ques;
+    private int pos = 0, ref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,17 +59,10 @@ public class QuizCarteActivity extends MenuActivity implements LoaderManager.Loa
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        String format = "dd MM yyyy";
-        formater = new SimpleDateFormat(format);
-        Date d = new java.util.Date();
-        date = formater.format(d);
-
         ques = new ArrayList<>();
-
         adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_1, null, new String[]{"question"}, new int[]{android.R.id.text1}, 0);
 
         diff = getResources().getStringArray(R.array.difficult);
-
         reponse = (EditText) findViewById(R.id.quiz_reponse);
         question = (TextView) findViewById(R.id.quiz_question);
         verifier = (Button) findViewById(R.id.verifier);
@@ -86,6 +74,11 @@ public class QuizCarteActivity extends MenuActivity implements LoaderManager.Loa
 
     public boolean checkDate(String d, int val) {
         try {
+            String format = "dd MM yyyy";
+            SimpleDateFormat formater = new SimpleDateFormat(format);
+            Date d2 = new java.util.Date();
+            String date = formater.format(d2);
+
             Date date1 = formater.parse(date);
             Date date2 = formater.parse(d);
             long diff = date2.getTime() - date1.getTime();
@@ -110,19 +103,10 @@ public class QuizCarteActivity extends MenuActivity implements LoaderManager.Loa
             difficile.setEnabled(true);
             verifier.setEnabled(false);
         }
-        change("dateView", date);
-        ques.remove(pos);
-    }
-
-    public void change(String col, String val) {
+         LienProvider lien = new LienProvider(this);
         int id = adapter.getCursor().getInt(0);
-        ContentResolver resolver = getContentResolver();
-        Uri.Builder builder = new Uri.Builder();
-        builder.scheme("content").authority(getString(R.string.authority)).appendPath("update_level");
-        ContentValues newValues = new ContentValues();
-        newValues.put(col, val);
-        Uri uri = builder.build();
-        int c = resolver.update(uri, newValues, "_id= " + id, null);
+        lien.updateCarteDate(id);
+        ques.remove(pos);
     }
 
     public void difficile(View view) {
@@ -135,40 +119,41 @@ public class QuizCarteActivity extends MenuActivity implements LoaderManager.Loa
         builder.setTitle(R.string.ajouter_carte_tv_choice)
                 .setItems(R.array.difficult, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        change("niveau", diff[which]);
+                        LienProvider lien = new LienProvider(getApplicationContext());
+                        int id = adapter.getCursor().getInt(0);
+                        lien.updateCarteNiveau(id, diff[which]);
+                        if (!ques.isEmpty()) {
+                            affiche();
+                        } else {
+                            Toast toast = Toast.makeText(getApplicationContext(), "Session quotidienne finie", Toast.LENGTH_SHORT);
+                            toast.show();
+                            if (timer != null) {
+                                timer.cancel();
+                            }
+                            finish();
+                        }
+
                     }
                 });
         AlertDialog dialog = builder.create();
-        if (!ques.isEmpty()) {
-            dialog.show();
-            affiche();
-        } else {
-            Toast toast = Toast.makeText(this, "Session quotidienne finie", Toast.LENGTH_SHORT);
-            toast.show();
-            if (timer != null) {
-                timer.cancel();
-            }
-            finish();
-        }
+        dialog.show();
     }
 
     public void affiche() {
         if (!ques.isEmpty()) {
             pos = (int) (Math.random() * ques.size());
             adapter.getCursor().moveToPosition(ques.get(pos) - ref);
-            String ch = adapter.getCursor().getString(0);
-            Log.d(ch, "affiche-id: ");
-            String tmp = adapter.getCursor().getString(1);
-            question.setText(tmp);
+            question.setText(adapter.getCursor().getString(1));
             if (timer != null) {
                 timer.cancel();
             }
             timer = new Timer();
             myTimerTask = new MyTimerTask();
             SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-            String t = SP.getString("timer", "1");
-            timer.schedule(myTimerTask, 1000 * Integer.parseInt(t));
+            timer.schedule(myTimerTask, 1000 * Integer.parseInt(SP.getString("timer", "30")));
         } else {
+            Toast toast = Toast.makeText(this, "Il n'y a pas de carte à réviser aujourd'hui", Toast.LENGTH_SHORT);
+            toast.show();
             finish();
         }
 

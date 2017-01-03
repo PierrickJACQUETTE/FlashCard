@@ -13,7 +13,6 @@ import android.widget.SimpleCursorAdapter;
 
 public class ListeJeuxFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static String authority = "com.project.fcContentProvider";
     private OnFragmentInteractionListener mListener;
     private SimpleCursorAdapter adapter;
     private LoaderManager manager;
@@ -58,7 +57,7 @@ public class ListeJeuxFragment extends ListFragment implements LoaderManager.Loa
     public android.support.v4.content.Loader<Cursor> onCreateLoader(int id, Bundle args) {
         Uri uri;
         Uri.Builder builder = new Uri.Builder();
-        uri = builder.scheme("content").authority(authority).appendPath("jeu_table").build();
+        uri = builder.scheme("content").authority(getString(R.string.authority)).appendPath("jeu_table").build();
         return new CursorLoader(getActivity(), uri, new String[]{"_id", "nom"}, null, null, null);
     }
 
