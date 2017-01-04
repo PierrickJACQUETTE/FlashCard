@@ -17,6 +17,7 @@ import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

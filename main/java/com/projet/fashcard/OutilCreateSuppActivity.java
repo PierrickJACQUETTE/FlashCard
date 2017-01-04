@@ -1,7 +1,6 @@
 package com.projet.fashcard;
 
 import android.Manifest;
-import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -86,11 +85,11 @@ public class OutilCreateSuppActivity extends MenuActivity implements ListeJeuxFr
         });
         builder.setNegativeButton(R.string.outilCreateSupp_dialog_add, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-
                 Intent intent = new Intent(OutilCreateSuppActivity.this, AjouterCarteActivity.class);
                 intent.putExtra("id", position);
                 startActivity(intent);
                 finish();
+
             }
         });
         AlertDialog dialog = builder.create();
