@@ -30,6 +30,6 @@
     <string name="quiz_carte_titre">Quel est votre réponse ?</string>
 
     <string name="authority">com.project.fcContentProvider</string>
-    <string name="dowload">https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1</string>
-
+    <string name="download">https://www.dropbox.com/s/iu500a7b5cpq1iw/import.xml?dl=1</string>
+    <string name="download2">https://www.dropbox.com/s/rwuqou17nmnx6bj/grosImport.xml?dl=1</string>
 </resources>

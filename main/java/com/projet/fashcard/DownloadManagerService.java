@@ -33,19 +33,25 @@ public class DownloadManagerService extends Service {
         public void onReceive(Context context, Intent intent) {
             long reference = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
             if (id2 == reference) {
-                try {
-                    XmlPullParserFactory xmlFactory = XmlPullParserFactory.newInstance();
-                    File sdcard = Environment.getExternalStorageDirectory();
-                    File file = new File(sdcard, Environment.DIRECTORY_DOWNLOADS + "/" + name);
-                    FileInputStream inputstream = new FileInputStream(file);
-                    parser = xmlFactory.newPullParser();
-                    parser.setInput(inputstream, null);
-                    parseFile();
-                } catch (XmlPullParserException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            XmlPullParserFactory xmlFactory = XmlPullParserFactory.newInstance();
+                            File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + "/" + name);
+                            FileInputStream inputstream = new FileInputStream(file);
+                            parser = xmlFactory.newPullParser();
+                            parser.setInput(inputstream, null);
+                            parseFile();
+                        } catch (XmlPullParserException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
             }
         }
     };
@@ -59,13 +65,16 @@ public class DownloadManagerService extends Service {
     private void loadFromInternet() {
         dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
         SharedPreferences SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String adr = SP.getString("url", getString(R.string.dowload));
+        String adr = SP.getString("url", getString(R.string.download));
         Uri uri = Uri.parse(adr);
         DownloadManager.Request req = new DownloadManager.Request(uri);
+        File file = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS + "/" + name);
+        if (file.exists()) {
+            file.delete();
+        }
         req.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE).
                 setDescription("Download file for database").
                 setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, name);
-
         id2 = dm.enqueue(req);
         registerReceiver(onComplete, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     }
