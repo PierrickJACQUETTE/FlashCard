@@ -10,6 +10,7 @@ import android.support.v4.content.CursorLoader;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 public class ListeJeuxFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -63,6 +64,10 @@ public class ListeJeuxFragment extends ListFragment implements LoaderManager.Loa
 
     @Override
     public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+        if (data != null && data.getCount() == 0) {
+            Toast toast = Toast.makeText(getContext(), "Aucun jeu", Toast.LENGTH_SHORT);
+            toast.show();
+        }
         adapter.swapCursor(data);
     }
 
